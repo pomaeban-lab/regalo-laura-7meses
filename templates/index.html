@@ -25,7 +25,6 @@
         .contenido-derecha { width: 60%; display: flex; flex-direction: column; padding: 40px 30px; text-align: center; position: relative; }
         .header-stats { display: flex; justify-content: space-around; margin-bottom: 60px; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 20px; }
         .num { font-size: 2.8rem; font-weight: 800; color: var(--rojo); line-height: 1; }
-        
         #botones-inicio { display: flex; flex-direction: column; align-items: center; padding-top: 50px; gap: 40px; flex-grow: 1; }
         .btn-love {
             background: white; border: 5px solid #f0f0f0; border-radius: 50%; cursor: pointer;
@@ -33,15 +32,18 @@
         }
         .btn-vendas { width: 180px; height: 180px; }
         .btn-juego { width: 100px; height: 100px; font-size: 45px; color: var(--rojo); }
-
+        .mensaje-romantico {
+            margin-top: 25px; font-size: 1.1rem; font-style: italic; background: rgba(255, 255, 255, 0.9);
+            padding: 20px; border-radius: 15px; border-left: 5px solid var(--rojo); max-width: 85%;
+            display: none; animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         #game-container { display: none; flex-direction: column; align-items: center; padding-top: 30px; }
         .btn-estilo { background: var(--rojo); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; }
-
         #poema-final {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--blanco); z-index: 100; padding: 40px 20px; text-align: center; overflow-y: auto;
         }
-        .verso { font-family: 'Dancing Script'; font-size: 1.6rem; line-height: 1.4; margin-bottom: 15px; color: #333; }
     </style>
 </head>
 <body>
@@ -58,53 +60,39 @@
                 <div><div class="num">7</div><div style="font-size: 0.8rem;">Meses</div></div>
                 <div style="text-align: right;">
                     <div style="font-size: 0.9rem; font-weight: bold;">10 de mayo, 2026</div>
-                    <div style="color: var(--rojo); font-weight: bold;">PARA LAURA ❤️</div>
+                    <div style="color: var(--rojo); font-weight: bold;">PARA MI LAURA ❤️</div>
                 </div>
             </div>
 
             <div id="botones-inicio">
                 <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
-                    <button class="btn-love btn-vendas" onclick="iniciarJuego()"><img src="{{ url_for('static', filename='img/image_66825a.png') }}" style="width:85%"></button>
+                    <button class="btn-love btn-vendas" onclick="mostrarOracion()">
+                        <img src="{{ url_for('static', filename='img/image_66825a.png') }}" style="width:85%">
+                    </button>
+                    <button class="btn-love btn-juego" onclick="iniciarJuego()">❤️</button>
                 </div>
-                <p>¡Haz clic en el corazón para empezar el reto de los 7 meses!</p>
+                <div id="oracion-texto" class="mensaje-romantico"></div>
             </div>
 
             <div id="game-container">
-                <h2 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 2.2rem;" id="question-text">Pregunta</h2>
+                <h2 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 2.5rem;" id="question-text">Pregunta</h2>
                 <input type="text" id="answer-input" style="width: 80%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 2px solid #eee; text-align: center;">
                 <br>
-                <button class="btn-estilo" onclick="checkAnswer()">Siguiente</button>
+                <button class="btn-estilo" onclick="checkAnswer()">Responder</button>
                 <div id="feedback" style="margin-top: 15px; font-weight: bold;"></div>
             </div>
         </div>
 
         <div id="poema-final">
-            <h1 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 3rem;">Siete Meses a tu Lado...</h1>
-            <div class="verso">
-                Siete meses han pasado desde aquel diez de octubre,<br>
-                un sentimiento tan puro que todo mi ser recubre.<br>
-                Empezamos como un sueño, una chispa, una ilusión,<br>
-                y hoy eres la dueña absoluta de mi corazón.
-            </div>
-            <div class="verso">
-                Eres mi "precasada", mi paz y mi alegría,<br>
-                la estrellita que alumbra mi noche y mi día.<br>
-                Gracias por cada risa, por el apoyo y la fe,<br>
-                por ser esa mujer increíble que siempre soñé.
-            </div>
-            <div class="verso">
-                No importa el tiempo ni lo que el mundo diga,<br>
-                mientras tu mano con la mía siempre siga.<br>
-                Eres mi pasado, mi presente y mi futuro ideal,<br>
-                nuestro amor es único, mágico y real.
-            </div>
-            <div class="verso">
-                Te amo más de lo que estas palabras pueden decir,<br>
-                gracias por elegirme y por hacerme tan feliz.
-            </div>
-            <h2 style="font-family: 'Dancing Script'; color: var(--rojo);">¡Felices 7 Meses, Laura! ❤️</h2>
+            <h1 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 3.5rem;">Para mi Laura...</h1>
+            <p style="font-family: 'Dancing Script'; font-size: 1.8rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+                Siete meses de risas, de apoyo y de amor,<br>
+                donde cada momento contigo es el mejor.<br>
+                Gracias por ser mi paz, mi locura y mi luz,<br>
+                el regalo más grande en mi vida eres tú.
+            </p>
             <br>
-            <button class="btn-estilo" onclick="location.reload()">Releer</button>
+            <button class="btn-estilo" onclick="location.reload()">Volver al inicio</button>
         </div>
     </div>
 
@@ -137,13 +125,17 @@
         setInterval(() => cambiarImagen('cuadro2'), 7000);
         window.onload = () => { cambiarImagen('cuadro1'); cambiarImagen('cuadro2'); };
 
-        // CONFIGURACIÓN DE LAS 5 PREGUNTAS
+        const frases = ["Laura, gracias por estos 213 días de felicidad absoluta.", "Eres el amor de mi vida.", "7 meses son solo el comienzo."];
+        function mostrarOracion() {
+            const div = document.getElementById('oracion-texto');
+            div.style.display = 'block';
+            div.innerText = frases[Math.floor(Math.random() * frases.length)];
+        }
+
         const preguntas = [
-            { q: "1. ¿Cuántos meses cumplimos hoy?", a: "7 meses" },
-            { q: "2. ¿En qué fecha nos hicimos novios?", a: "10 de octubre del 2025" },
-            { q: "3. ¿Cuál es mi jugador de fútbol favorito?", a: "Ricardo kaka" },
-            { q: "4. ¿Cómo te digo de cariño (brilla en el cielo)?", a: "estrellita" },
-            { q: "5. ¿Qué palabra usamos con 'pre' al dormir?", a: "precasados" }
+            { q: "¿Cuántos meses cumplimos hoy?", a: "7 meses" },
+            { q: "¿Quién es mi jugador favorito?", a: "Ricardo kaka" },
+            { q: "¿Qué palabra usamos al dormir?", a: "Precasados" }
         ];
 
         let step = 0;
@@ -160,13 +152,9 @@
                 step++;
                 if (step < preguntas.length) {
                     document.getElementById('question-text').innerText = preguntas[step].q;
-                    input.value = ""; feed.innerText = "¡Muy bien, amor! Siguiente..."; feed.style.color = "green";
-                } else { 
-                    document.getElementById('poema-final').style.display = 'block'; 
-                }
-            } else { 
-                feed.innerText = "¡Casi! Intenta de nuevo, hermosa."; feed.style.color = "red"; 
-            }
+                    input.value = ""; feed.innerText = "¡Correcto! ❤️";
+                } else { document.getElementById('poema-final').style.display = 'block'; }
+            } else { feed.innerText = "Intenta de nuevo"; }
         }
     </script>
 </body>
