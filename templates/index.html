@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 Meses con Laura ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --rojo: #e31e24; --oscuro: #1a1a1a; --blanco: #ffffff; }
+
+        body { 
+            background-image: url("{{ url_for('static', filename='img/image_6519fc.jpg') }}");
+            background-size: cover; background-position: center; background-attachment: fixed;
+            font-family: 'Poppins', sans-serif; margin: 0;
+            display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
+        }
+
+        .reproductor-flotante {
+            position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; border: 1px solid var(--rojo);
+        }
+
+        .btn-music { background: var(--rojo); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
+
+        .contenedor-principal {
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            width: 95vw; max-width: 1150px; height: 88vh; border-radius: 30px;
+            display: flex; box-shadow: 0 25px 50px rgba(0,0,0,0.4); overflow: hidden; position: relative;
+        }
+
+        .lateral-fotos { background-color: var(--rojo); width: 40%; display: grid; grid-template-rows: 1fr 1fr; gap: 15px; padding: 20px; }
+
+        .marco-aleatorio { border: 5px solid var(--blanco); border-radius: 15px; overflow: hidden; position: relative; background: #eee; }
+
+        .marco-aleatorio img { width: 100%; height: 100%; object-fit: cover; position: absolute; transition: opacity 1s; opacity: 0; }
+
+        .foto-visible { opacity: 1 !important; }
+
+        .contenido-derecha { width: 60%; display: flex; flex-direction: column; padding: 40px 30px; text-align: center; position: relative; }
+
+        .header-stats { display: flex; justify-content: space-around; margin-bottom: 60px; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 20px; }
+
+        .num { font-size: 2.8rem; font-weight: 800; color: var(--rojo); line-height: 1; }
+
+        @keyframes latido { 
+            0% { transform: scale(1); } 15% { transform: scale(1.1); } 30% { transform: scale(1); }
+            45% { transform: scale(1.15); } 60% { transform: scale(1); } 100% { transform: scale(1); }
+        }
+
+        #botones-inicio { display: flex; flex-direction: column; align-items: center; padding-top: 50px; gap: 40px; flex-grow: 1; }
+
+        .btn-love {
+            background: white; border: 5px solid #f0f0f0; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); animation: latido 2s infinite;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .btn-love:hover { animation: none; transform: scale(1.1) !important; border-color: var(--rojo); }
+
+        .btn-vendas { width: 180px; height: 180px; }
+        .btn-juego { width: 100px; height: 100px; font-size: 45px; color: var(--rojo); }
+
+        .mensaje-romantico {
+            margin-top: 25px; font-size: 1.1rem; font-style: italic; background: rgba(255, 255, 255, 0.9);
+            padding: 20px; border-radius: 15px; border-left: 5px solid var(--rojo); max-width: 85%;
+            display: none; animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        #game-container { display: none; flex-direction: column; align-items: center; padding-top: 30px; }
+
+        .btn-estilo { background: var(--rojo); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+
+        #poema-final {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--blanco); z-index: 100; padding: 40px 20px; text-align: center; overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="reproductor-flotante">
+        <span style="font-size: 0.8rem; font-weight: bold; color: var(--rojo);">Nuestra Música 🎵</span>
+        <audio id="miAudio" loop><source src="{{ url_for('static', filename='music/laura.mp3') }}" type="audio/mpeg"></audio>
+        <button class="btn-music" onclick="toggleMusic()"><span id="musicIcon">▶</span></button>
+    </div>
+
+    <div class="contenedor-principal">
+        <div class="lateral-fotos">
+            <div class="marco-aleatorio" id="cuadro1"></div>
+            <div class="marco-aleatorio" id="cuadro2"></div>
+        </div>
+
+        <div class="contenido-derecha">
+            <div class="header-stats">
+                <div><div class="num">213</div><div style="font-size: 0.8rem;">Días</div></div>
+                <div><div class="num">7</div><div style="font-size: 0.8rem;">Meses</div></div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.9rem; font-weight: bold;">10 de mayo, 2026</div>
+                    <div style="color: var(--rojo); font-weight: bold;">PARA MI LAURA ❤️</div>
+                </div>
+            </div>
+
+            <div id="botones-inicio">
+                <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
+                    <button class="btn-love btn-vendas" onclick="mostrarOracion()">
+                        <img src="{{ url_for('static', filename='img/image_66825a.png') }}" style="width:85%" alt="❤️">
+                    </button>
+                    <button class="btn-love btn-juego" onclick="iniciarJuego()">❤️</button>
+                </div>
+                <div id="oracion-texto" class="mensaje-romantico"></div>
+            </div>
+
+            <div id="game-container">
+                <h2 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 2.5rem;" id="question-text">Pregunta</h2>
+                <input type="text" id="answer-input" style="width: 80%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 2px solid #eee; text-align: center;">
+                <br>
+                <button class="btn-estilo" onclick="checkAnswer()">Responder</button>
+                <div id="feedback" style="margin-top: 15px; font-weight: bold;"></div>
+            </div>
+        </div>
+
+        <div id="poema-final">
+            <h1 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 3.5rem;">Para mi Laura...</h1>
+            <p style="font-family: 'Dancing Script'; font-size: 1.8rem; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+                Siete meses de risas, de apoyo y de amor,<br>
+                donde cada momento contigo es el mejor.<br>
+                Gracias por ser mi paz, mi locura y mi luz,<br>
+                el regalo más grande en mi vida eres tú.
+            </p>
+            <br>
+            <button class="btn-estilo" onclick="location.reload()">Volver al inicio</button>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('miAudio');
+        const musicIcon = document.getElementById('musicIcon');
+
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); musicIcon.innerText = "⏸"; } 
+            else { audio.pause(); musicIcon.innerText = "▶"; }
+        }
+
+        document.addEventListener('click', () => { if (audio.paused) { audio.play(); musicIcon.innerText = "⏸"; } }, { once: true });
+
+        const misFotos = [
+            "{{ url_for('static', filename='img/image_67d77c.jpg') }}",
+            "{{ url_for('static', filename='img/image_67d757.png') }}",
+            "{{ url_for('static', filename='img/image_67d738.jpg') }}",
+            "{{ url_for('static', filename='img/image_67d71c.jpg') }}",
+            "{{ url_for('static', filename='img/image_66763e.png') }}",
+            "{{ url_for('static', filename='img/image_659145.jpg') }}",
+            "{{ url_for('static', filename='img/image_65913c.jpg') }}",
+            "{{ url_for('static', filename='img/image_658e78.jpg') }}",
+            "{{ url_for('static', filename='img/image_658e57.png') }}",
+            "{{ url_for('static', filename='img/image_658e35.jpg') }}",
+            "{{ url_for('static', filename='img/image_658dfe.jpg') }}"
+        ];
+
+        function cambiarImagen(id) {
+            const cont = document.getElementById(id);
+            const img = document.createElement('img');
+            img.src = misFotos[Math.floor(Math.random() * misFotos.length)];
+            img.onload = () => {
+                img.classList.add('foto-visible');
+                if (cont.children.length > 1) setTimeout(() => cont.removeChild(cont.firstChild), 1000);
+            };
+            cont.appendChild(img);
+        }
+
+        setInterval(() => cambiarImagen('cuadro1'), 5000);
+        setInterval(() => cambiarImagen('cuadro2'), 7000);
+        window.onload = () => { cambiarImagen('cuadro1'); cambiarImagen('cuadro2'); };
+
+        const frases = [
+            "Laura, gracias por estos 213 días de felicidad absoluta.",
+            "Eres el amor de mi vida y mi mejor decisión.",
+            "Siete meses son solo el comienzo de nuestra historia.",
+            "Gracias por sanar mi corazón y hacerlo latir así."
+        ];
+
+        function mostrarOracion() {
+            const div = document.getElementById('oracion-texto');
+            div.style.display = 'block';
+            div.innerText = frases[Math.floor(Math.random() * frases.length)];
+        }
+
+        const preguntas = [
+            { q: "¿Cuántos meses cumplimos hoy?", a: "7 meses" },
+            { q: "¿Quién es mi jugador favorito?", a: "Ricardo kaka" },
+            { q: "¿Qué palabra usamos al dormir (empieza con pre)?", a: "Precasados" }
+        ];
+
+        let step = 0;
+        function iniciarJuego() {
+            document.getElementById('botones-inicio').style.display = 'none';
+            document.getElementById('game-container').style.display = 'flex';
+            document.getElementById('question-text').innerText = preguntas[0].q;
+        }
+
+        function checkAnswer() {
+            const input = document.getElementById('answer-input');
+            const feed = document.getElementById('feedback');
+            if (input.value.trim().toLowerCase() === preguntas[step].a.toLowerCase()) {
+                step++;
+                if (step < preguntas.length) {
+                    document.getElementById('question-text').innerText = preguntas[step].q;
+                    input.value = ""; feed.innerText = "¡Correcto bb! ❤️";
+                } else { document.getElementById('poema-final').style.display = 'block'; }
+            } else { feed.innerText = "Intenta de nuevo mi amor"; feed.style.color = "red"; }
+        }
+    </script>
+</body>
+</html>
