@@ -6,76 +6,171 @@
     <title>7 Meses con Laura ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --rojo: #e31e24; --oscuro: #1a1a1a; --blanco: #ffffff; }
+        :root {
+            --rojo: #e31e24;
+            --oscuro: #1a1a1a;
+            --blanco: #ffffff;
+            --verde-exito: #28a745;
+        }
 
         body { 
             background-image: url("{{ url_for('static', filename='img/image_6519fc.jpg') }}");
-            background-size: cover; background-position: center; background-attachment: fixed;
-            font-family: 'Poppins', sans-serif; margin: 0;
-            display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
+        /* Reproductor */
         .reproductor-flotante {
-            position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px; border-radius: 50px; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 1000; border: 1px solid var(--rojo);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border: 1px solid var(--rojo);
         }
 
-        .btn-music { background: var(--rojo); color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
+        .btn-music {
+            background: var(--rojo);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+        }
 
         .contenedor-principal {
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
-            width: 95vw; max-width: 1150px; height: 88vh; border-radius: 30px;
-            display: flex; box-shadow: 0 25px 50px rgba(0,0,0,0.4); overflow: hidden; position: relative;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            width: 95vw;
+            max-width: 1150px;
+            height: 88vh;
+            border-radius: 30px;
+            display: flex;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            overflow: hidden;
+            position: relative;
         }
 
-        .lateral-fotos { background-color: var(--rojo); width: 40%; display: grid; grid-template-rows: 1fr 1fr; gap: 15px; padding: 20px; }
+        .lateral-fotos {
+            background-color: var(--rojo);
+            width: 40%; 
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
 
-        .marco-aleatorio { border: 5px solid var(--blanco); border-radius: 15px; overflow: hidden; position: relative; background: #eee; }
+        .marco-aleatorio {
+            border: 5px solid var(--blanco);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            background: #eee;
+        }
 
-        .marco-aleatorio img { width: 100%; height: 100%; object-fit: cover; position: absolute; transition: opacity 1s; opacity: 0; }
+        .marco-aleatorio img {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; transition: opacity 1s ease-in-out;
+            opacity: 0;
+        }
 
         .foto-visible { opacity: 1 !important; }
 
-        .contenido-derecha { width: 60%; display: flex; flex-direction: column; padding: 40px 30px; text-align: center; position: relative; }
+        .contenido-derecha {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 30px; /* Aumentamos el padding superior */
+            text-align: center;
+            position: relative;
+        }
 
-        .header-stats { display: flex; justify-content: space-around; margin-bottom: 60px; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 20px; }
+        .header-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 50px; /* Más espacio debajo de los números */
+            background: rgba(0,0,0,0.05);
+            padding: 15px;
+            border-radius: 20px;
+        }
 
         .num { font-size: 2.8rem; font-weight: 800; color: var(--rojo); line-height: 1; }
 
-        @keyframes latido { 
-            0% { transform: scale(1); } 15% { transform: scale(1.1); } 30% { transform: scale(1); }
-            45% { transform: scale(1.15); } 60% { transform: scale(1); } 100% { transform: scale(1); }
+        /* ANIMACIÓN DE LATIDO */
+        @keyframes latido {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
         }
 
-        #botones-inicio { display: flex; flex-direction: column; align-items: center; padding-top: 50px; gap: 40px; flex-grow: 1; }
+        #botones-inicio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Alineado arriba para controlar el margen */
+            padding-top: 40px; /* ESTO BAJA LOS BOTONES */
+            gap: 40px;
+            flex-grow: 1;
+        }
 
         .btn-love {
-            background: white; border: 5px solid #f0f0f0; border-radius: 50%; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); animation: latido 2s infinite;
-            display: flex; align-items: center; justify-content: center;
+            background: white;
+            border: 5px solid #f0f0f0;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            animation: latido 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
         }
 
-        .btn-love:hover { animation: none; transform: scale(1.1) !important; border-color: var(--rojo); }
+        .btn-love:hover { transform: scale(1.1) !important; animation: none; border-color: var(--rojo); }
 
         .btn-vendas { width: 180px; height: 180px; }
         .btn-juego { width: 100px; height: 100px; font-size: 45px; color: var(--rojo); }
 
         .mensaje-romantico {
-            margin-top: 25px; font-size: 1.1rem; font-style: italic; background: rgba(255, 255, 255, 0.9);
-            padding: 20px; border-radius: 15px; border-left: 5px solid var(--rojo); max-width: 85%;
-            display: none; animation: fadeIn 0.5s ease;
+            margin-top: 25px;
+            font-size: 1.1rem;
+            font-style: italic;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--rojo);
+            max-width: 85%;
+            display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         #game-container { display: none; flex-direction: column; align-items: center; padding-top: 30px; }
-
-        .btn-estilo { background: var(--rojo); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        .btn-estilo { background: var(--rojo); color: white; border: none; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
 
         #poema-final {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--blanco); z-index: 100; padding: 40px 20px; text-align: center; overflow-y: auto;
+            background: var(--blanco); z-index: 100; padding: 40px 20px; text-align: center;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -83,7 +178,9 @@
 
     <div class="reproductor-flotante">
         <span style="font-size: 0.8rem; font-weight: bold; color: var(--rojo);">Nuestra Música 🎵</span>
-        <audio id="miAudio" loop><source src="{{ url_for('static', filename='music/laura.mp3') }}" type="audio/mpeg"></audio>
+        <audio id="miAudio" loop>
+            <source src="{{ url_for('static', filename='music/laura.mp3') }}" type="audio/mpeg">
+        </audio>
         <button class="btn-music" onclick="toggleMusic()"><span id="musicIcon">▶</span></button>
     </div>
 
@@ -95,8 +192,8 @@
 
         <div class="contenido-derecha">
             <div class="header-stats">
-                <div><div class="num">213</div><div style="font-size: 0.8rem;">Días</div></div>
-                <div><div class="num">7</div><div style="font-size: 0.8rem;">Meses</div></div>
+                <div><div class="num">213</div><div style="font-size: 0.8rem; color: #666;">Días</div></div>
+                <div><div class="num">7</div><div style="font-size: 0.8rem; color: #666;">Meses</div></div>
                 <div style="text-align: right;">
                     <div style="font-size: 0.9rem; font-weight: bold;">10 de mayo, 2026</div>
                     <div style="color: var(--rojo); font-weight: bold;">PARA MI LAURA ❤️</div>
@@ -115,7 +212,7 @@
 
             <div id="game-container">
                 <h2 style="font-family: 'Dancing Script'; color: var(--rojo); font-size: 2.5rem;" id="question-text">Pregunta</h2>
-                <input type="text" id="answer-input" style="width: 80%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 2px solid #eee; text-align: center;">
+                <input type="text" id="answer-input" style="width: 80%; padding: 15px; margin: 20px 0; border-radius: 12px; border: 2px solid #eee; text-align: center; font-size: 1.1rem;">
                 <br>
                 <button class="btn-estilo" onclick="checkAnswer()">Responder</button>
                 <div id="feedback" style="margin-top: 15px; font-weight: bold;"></div>
@@ -179,6 +276,7 @@
             "Laura, gracias por estos 213 días de felicidad absoluta.",
             "Eres el amor de mi vida y mi mejor decisión.",
             "Siete meses son solo el comienzo de nuestra historia.",
+            "Amo cada segundo que paso a tu lado, mi estrellita.",
             "Gracias por sanar mi corazón y hacerlo latir así."
         ];
 
